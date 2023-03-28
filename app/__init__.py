@@ -3,7 +3,7 @@ from flask import Flask
 from config import Config
 
 from .auth.routes import auth
-# from .ig.routes import ig
+from .ig.routes import ig
 
 from .models import db, User
 from flask_migrate import Migrate
@@ -30,7 +30,7 @@ login.login_view = 'auth.loginPage'
 
 
 app.register_blueprint(auth)
-# app.register_blueprint(ig)
+app.register_blueprint(ig)
 
 from . import routes
 
