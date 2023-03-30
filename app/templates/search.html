@@ -11,13 +11,17 @@
     </div></div>
 <div class="container">
     <div class="row justify-content-center">
+        
         <form method="POST" class="col-6">
             {{ form.hidden_tag() }}
             
-            {{ form.pokemonName(class='form-control', placeholder='Pokemon name') }}
-            {{ form.submit(class="btn-primary", placeholder="Submit") }}
+            {{ form.pokemonName(class='input-group', placeholder='Pokemon name') }}
+            {{ form.submit(class="btn-warning", placeholder="Submit") }}
         </form>
 
+
+
+        
     </div>
 </div>
 

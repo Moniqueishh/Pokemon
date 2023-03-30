@@ -2,11 +2,12 @@
 from app import app
 
 from flask import render_template, request, url_for, redirect
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_required
 
-from .auth.forms import pSearch, SignUpForm, LoginForm
-from .models import User
+from .auth.forms import pSearch, LoginForm
+from .models import User, Pokemon
 import requests, json
+from flask_bootstrap import Bootstrap
 
 
 @app.route('/')
@@ -16,6 +17,7 @@ def homePage():
 @app.route("/search", methods=["GET", "POST"])
 def searchPage():
     form = pSearch()
+    Pokemon.query.limit(5)
     if request.method == "POST":
         if form.validate():
             pokemonName = form.pokemonName.data
@@ -34,6 +36,10 @@ def searchPage():
                 pokemon_dict["Base ATK"] = my_dict["stats"][1]["base_stat"]
                 pokemon_dict["Base HP"] = my_dict["stats"][0]["base_stat"]
                 pokemon_dict["Base DEF"] = my_dict["stats"][2]["base_stat"]
+
+                # poke = Pokemon(pokemon_dict = {})
+
+
                 return render_template("search_results.html", form = form, pokemon_dict = pokemon_dict)
 
 
@@ -41,3 +47,27 @@ def searchPage():
                 return "The pokemon you're looking for does not exist."
 
     return render_template("search.html", form = form)
+
+@app.route('/catch')
+@login_required
+def catch(poke_id):
+    poke = Pokemon.query.get(poke_id)
+    if poke:
+        current_user.catch(poke)
+        poke.caught_poke.counts(5)
+    else:
+        pass
+
+    return render_template('search.html')
+
+# @app.route('/catch/<int:poke_id>)
+# @login_required
+# def catchPokemon(poke_id):
+#         poke = Pokemon.query.get(poke_id)
+#         if poke:
+#             current_user.catch(poke)
+#             poke.caught = True
+#             poke.caught_poke.count(5)
+#         else:
+#             pass
+#     return redirect(url_for("catchPoke")

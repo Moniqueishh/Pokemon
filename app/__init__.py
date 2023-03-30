@@ -8,9 +8,11 @@ from .ig.routes import ig
 from .models import db, User
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
 
 
 app = Flask(__name__)
+Bootstrap(app)
 
 login = LoginManager()
 
@@ -33,4 +35,3 @@ app.register_blueprint(auth)
 app.register_blueprint(ig)
 
 from . import routes
-
